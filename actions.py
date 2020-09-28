@@ -12,8 +12,6 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import (SlotSet, SessionStarted, ActionExecuted, EventType, ConversationPaused, UserUtteranceReverted)
 import logging
 logger = logging.getLogger(__name__)
-from random import seed
-from random import randint
 
 class ActionFallback(Action):
 
@@ -32,12 +30,10 @@ class ActionFallback(Action):
     ) -> List[EventType]:
         
         # only utter the template if it is available
-        seed(1)
-        number_of_fallback= randint(0, 100)
-        logger.debug("Hit fall back.")
-        logger.info(f"number_of_fallback:{number_of_fallback}")
-        if number_of_fallback%2==1:
-
+        if  (
+            len(tracker.events) >= 5
+            and tracker.events[-5].get("name") == "action_default_fallback"
+        ):            
             dispatcher.utter_message(template="utter_iamabot")
 
         # Fallback caused by Core

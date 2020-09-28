@@ -1,4 +1,4 @@
-POC demonstrate how to use action_default_fallback to provide different message based on some condition, POC uses random number to simuate the condition
+POC demonstrate how to use action_default_fallback to provide different message based on some condition, we wanted the human handover to take place in case the bot is going into fallback message twice in a row
 
 ## SHELL
 docker run  --user $(id -u):$(id -g) -it -v $(pwd):/app --entrypoint rasa rasa/rasa:1.10.12-full shell  --debug
