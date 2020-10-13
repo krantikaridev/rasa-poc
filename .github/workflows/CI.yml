@@ -29,12 +29,12 @@ jobs:
               run: |
                 rasa train
             
-            - name: Upload model
-              if: github.event_name == 'push' #&& (startsWith(github.event.ref, 'refs/tags') || github.ref == 'refs/heads/master')
-              uses: actions/upload-artifact@v2
-              with:
-                name: model
-                path: models
+            # - name: Upload model
+            #   if: github.event_name == 'push' #&& (startsWith(github.event.ref, 'refs/tags') || github.ref == 'refs/heads/master')
+            #   uses: actions/upload-artifact@v2
+            #   with:
+            #     name: model
+            #     path: models
 
             # - name: Run Through Test Stories
             #   run: |
