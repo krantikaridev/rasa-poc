@@ -49,6 +49,14 @@ jobs:
                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                DEST_DIR: 'Models'
+            
+            - name: Upload model to rasa - x            
+              env:
+                RASA_X_API_TOKEN: ${{ secrets.RASA_X_API_TOKEN }}
+              working-directory: ${{ github.workspace }}
+              run: |
+                model_path=`ls models/*.tar.gz | head -n 1`
+                curl -k -F "model=@${model_path}" "http://rasa-x.jovensalud.net/api/projects/default/models?api_token=${RASA_X_API_TOKEN}"                           
               
 
   
