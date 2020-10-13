@@ -1,0 +1,54 @@
+name: CI
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+    push:
+      branches: [ master ]
+    pull_request:
+      branches: [ master ]
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+    build-model:
+        name: Validate Data, Train Model, Test stories, Upload Model
+        runs-on: ubuntu-latest    
+        steps:
+            - uses: actions/checkout@v2   
+
+            - name: Set up Python 3.7
+              uses: actions/setup-python@v1
+              with:
+                python-version: 3.7
+        
+            - name: Install dependencies, set env
+              run: |
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            
+            - name: Train model
+              working-directory: ${{ github.workspace }}
+              run: |
+                rasa train
+            
+            - name: Upload model
+              if: github.event_name == 'push' #&& (startsWith(github.event.ref, 'refs/tags') || github.ref == 'refs/heads/master')
+              uses: actions/upload-artifact@v2
+              with:
+                name: model
+                path: models
+
+            # - name: Run Through Test Stories
+            #   run: |
+            #     rasa test 
+            
+            # - name: Upload model to S3    
+            #     uses: jakejarvis/s3-sync-action@v0.3.1
+            #     env:
+            #       SOURCE_DIR: './models'
+            #       AWS_REGION: 'us-east-1'
+            #       AWS_S3_BUCKET: 'jovensaludbot'
+            #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            #       DEST_DIR:'Models'
+              
+
+  

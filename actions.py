@@ -34,10 +34,10 @@ class ActionFallback(Action):
             len(tracker.events) >= 5
             and tracker.events[-5].get("name") == "action_default_fallback"
         ):            
-            dispatcher.utter_message(template="utter_iamabot")
+            dispatcher.utter_message(template="utter_default")
 
         # Fallback caused by Core
         else:
-            dispatcher.utter_message(template="utter_default")
+            dispatcher.utter_message(template="utter_iamabot")
         
         return [UserUtteranceReverted()]
