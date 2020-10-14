@@ -11,6 +11,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import (SlotSet, SessionStarted, ActionExecuted, EventType, ConversationPaused, UserUtteranceReverted)
 import logging
+
 logger = logging.getLogger(__name__)
 
 class ActionFallback(Action):
@@ -34,10 +35,10 @@ class ActionFallback(Action):
             len(tracker.events) >= 5
             and tracker.events[-5].get("name") == "action_default_fallback"
         ):            
-            dispatcher.utter_message(template="utter_default")
+            dispatcher.utter_message(template="utter_iamabot")
 
         # Fallback caused by Core
         else:
-            dispatcher.utter_message(template="utter_iamabot")
+            dispatcher.utter_message(template="utter_default")
         
         return [UserUtteranceReverted()]
