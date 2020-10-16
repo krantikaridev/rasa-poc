@@ -35,12 +35,15 @@ jobs:
             #   run: |
             #     rasa data validate --debug 
             - name: ENV and Other
+            - uses: jitterbit/get-changed-files@v1
               run: |
                 echo BRANCH_NAME : ${GITHUB_REF##*/}
                 echo ACTION_SERVER : $ACTION_SERVER
                 echo RUN_TRAINING : $RUN_TRAINING
                 echo "files : ${{steps.files.outputs.all}}"
+                
             - name: set_training
+            - uses: jitterbit/get-changed-files@v1
               if: |
                   contains(  steps.files.outputs.all, 'data/' ) 
                   || contains(  steps.files.outputs.all, 'config.yml' ) 
