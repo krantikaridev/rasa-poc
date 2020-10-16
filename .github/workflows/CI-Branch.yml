@@ -39,6 +39,11 @@ jobs:
         - name: ENV and Other        
           run: |
             echo BRANCH_NAME : ${GITHUB_REF##*/}
+            echo BRANCH_NAME : env.BRANCH_NAME
+            echo BRANCH_NAME : BRANCH_NAME
+            echo BRANCH_NAME : ${BRANCH_NAME}
+            echo BRANCH_NAME : ${env.BRANCH_NAME}
+            echo BRANCH_NAME : $${env.BRANCH_NAME}
             echo ACTION_SERVER : $ACTION_SERVER
             echo RUN_TRAINING : $RUN_TRAINING
 
@@ -92,7 +97,7 @@ jobs:
         
         
         - name: Upload model to rasa - x     
-          if: env.RUN_TRAINING == 'true'  && ${GITHUB_REF##*/} == 'stage' 
+          if: env.RUN_TRAINING == 'true'  && env.BRANCH_NAME == 'stage' 
           working-directory: ${{ github.workspace }}
           run: |
                 echo "simulate model upload to rasa-x"
