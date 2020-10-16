@@ -40,8 +40,9 @@ jobs:
           run: |
             echo BRANCH_NAME : ${GITHUB_REF##*/}
             echo ${GITHUB_REF##*/}
-            echo "BRANCH_NAME=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
+            echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
             echo BRANCH_NAME : $BRANCH_NAME
+            echo BRANCH_NAME : ${{BRANCH_NAME}}
             echo ACTION_SERVER : $ACTION_SERVER
             echo RUN_TRAINING : $RUN_TRAINING
 
