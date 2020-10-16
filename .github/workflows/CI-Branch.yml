@@ -18,7 +18,7 @@ jobs:
           RUN_TRAINING: 'false'
           BRANCH_NAME: ${GITHUB_REF##*/}
           B_N: ${{github.ref}}
-          B_N_1: ${{github.ref##*/}}
+        #   B_N_1: ${{github.ref##*/}}
 
         steps:
         - uses: actions/checkout@v2   
@@ -38,12 +38,12 @@ jobs:
             #   working-directory: ${{ github.workspace }}
             #   run: |
             #     rasa data validate --debug 
-        - name: ENV and Other        
+        - name: ENV and Other   && env.BRANCH_NAME == 'stage'      
           run: |
             echo BRANCH_NAME : ${GITHUB_REF##*/}
             echo ${GITHUB_REF##*/}
             echo B_N: $B_N
-            echo B_N_1: $B_N_1
+            # echo B_N_1: $B_N_1
             # echo ${github.ref}
             echo github.ref
             echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
