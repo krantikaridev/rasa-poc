@@ -21,20 +21,21 @@ jobs:
         - uses: actions/checkout@v2   
         - id: files
           uses: jitterbit/get-changed-files@v1
-            # - name: Set up Python 3.7
-            #   uses: actions/setup-python@v1
-            #   with:
-            #     python-version: 3.7
-        
-            # - name: Install dependencies, set env
-            #   run: |
-            #     python -m pip install --upgrade pip
-            #     pip install -r requirements.txt                
-                      
-            # - name: Rasa Data Validation
-            #   working-directory: ${{ github.workspace }}
-            #   run: |
-            #     rasa data validate --debug 
+          
+        - name: Set up Python 3.7
+            uses: actions/setup-python@v1
+            with:
+            python-version: 3.7
+    
+        - name: Install dependencies, set env
+            run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt                
+                    
+        - name: Rasa Data Validation
+            working-directory: ${{ github.workspace }}
+            run: |
+            rasa data validate --debug 
         
 
         - name: set_training
