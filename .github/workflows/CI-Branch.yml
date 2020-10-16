@@ -15,7 +15,7 @@ jobs:
           ACTION_SERVER: http://bot.jovensalud.net/actions/ 
           AWS_MODEL_DIRECTORY: 'Models'
           BOT_MODEL_DIRECTORY: './models'
-          RUN_TRAINING: 'false'
+          RUN_TRAINING: ${{false}}
           BRANCH_NAME: ${GITHUB_REF##*/}
         steps:
             # - uses: actions/checkout@v2   
@@ -42,14 +42,14 @@ jobs:
               run: echo "RUN_TRAINING=true"  >> $GITHUB_ENV
 
             - name: Train model
-              if: env.RUN_TRAINING == 'true'
+              if: env.RUN_TRAINING
               run: |
                 # rasa train
                 echo "simulate model training"
             
             
             - name: Download model from S3 
-              if: env.RUN_TRAINING == 'false'
+              if: env.RUN_TRAINING == false
               run: |
                 echo "simulate model download from S3"
             
@@ -68,7 +68,7 @@ jobs:
                 echo "simulate model test"
             
             - name: Upload model to S3 
-              if: env.RUN_TRAINING == 'true'
+              if: env.RUN_TRAINING
               run: |
                 echo "simulate model upload to S3"
             #   uses: jakejarvis/s3-sync-action@v0.5.1
@@ -82,7 +82,7 @@ jobs:
             
             
             - name: Upload model to rasa - x     
-              if: env.RUN_TRAINING == 'true'  && env.BRANCH_NAME == 'stage' 
+              if: env.RUN_TRAINING && env.BRANCH_NAME == 'stage' 
               working-directory: ${{ github.workspace }}
               run: |
                 echo "simulate model upload to rasa-x"
