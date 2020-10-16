@@ -17,6 +17,7 @@ jobs:
           BOT_MODEL_DIRECTORY: './models'
           RUN_TRAINING: 'false'
           BRANCH_NAME: ${GITHUB_REF##*/}
+          B_N: ${github.ref}
 
         steps:
         - uses: actions/checkout@v2   
@@ -40,6 +41,8 @@ jobs:
           run: |
             echo BRANCH_NAME : ${GITHUB_REF##*/}
             echo ${GITHUB_REF##*/}
+            echo B_N: $B_N
+            
             echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
             echo BRANCH_NAME : $BRANCH_NAME
             echo BRANCH_NAME : ${BRANCH_NAME}
