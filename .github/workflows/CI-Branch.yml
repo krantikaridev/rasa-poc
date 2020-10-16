@@ -9,7 +9,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
     build-model:
-        name: Validate Data, Train Model, Test stories, Upload Model
+        name: Branch Specific Logic
         runs-on: ubuntu-latest        
         env:
           ACTION_SERVER: http://bot.jovensalud.net/actions/ 
