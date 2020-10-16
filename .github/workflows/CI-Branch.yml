@@ -40,7 +40,7 @@ jobs:
             echo BRANCH_NAME : ${GITHUB_REF##*/}
             echo ACTION_SERVER : $ACTION_SERVER
             echo RUN_TRAINING : $RUN_TRAINING
-            echo "files : ${{steps.files.outputs.all}}"
+            echo files : ${{steps.files.outputs.all}}
 
         - name: set_training
           if: |
