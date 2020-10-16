@@ -16,7 +16,7 @@ jobs:
           AWS_MODEL_DIRECTORY: 'Models'
           BOT_MODEL_DIRECTORY: './models'
           TRAIN_MODEL: ${{true}}
-          BRANCH_NAME: ${{GITHUB_REF##*/}}
+          BRANCH_NAME: ${GITHUB_REF##*/}
         steps:
             # - uses: actions/checkout@v2   
 
