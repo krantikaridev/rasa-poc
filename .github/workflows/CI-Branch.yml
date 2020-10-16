@@ -16,9 +16,6 @@ jobs:
           AWS_MODEL_DIRECTORY: 'Models'
           BOT_MODEL_DIRECTORY: './models'
           RUN_TRAINING: 'false'
-          BRANCH_NAME: ${GITHUB_REF##*/}
-          B_N: ${{github.ref}}
-        #   B_N_1: ${{github.ref##*/}}
 
         steps:
         - uses: actions/checkout@v2   
@@ -38,22 +35,7 @@ jobs:
             #   working-directory: ${{ github.workspace }}
             #   run: |
             #     rasa data validate --debug 
-        - name: ENV and Other   && env.BRANCH_NAME == 'stage'      
-          run: |
-            echo BRANCH_NAME : ${GITHUB_REF##*/}
-            echo ${GITHUB_REF##*/}
-            echo B_N: $B_N
-            # echo B_N_1: $B_N_1
-            # echo ${github.ref}
-            echo github.ref
-            echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
-            echo BRANCH_NAME : $BRANCH_NAME
-            echo "BRANCH_NAME=${github.ref}" >> $GITHUB_ENV
-            echo BRANCH_NAME : ${BRANCH_NAME}
-            echo "BRANCH_NAME=${{github.ref}}" >> $GITHUB_ENV
-            echo BRANCH_NAME : ${BRANCH_NAME}
-            echo ACTION_SERVER : $ACTION_SERVER
-            echo RUN_TRAINING : $RUN_TRAINING
+        
 
         - name: set_training
           if: |
@@ -105,7 +87,7 @@ jobs:
         
         
         - name: Upload model to rasa - x     
-          if: env.RUN_TRAINING == 'true'  && env.BRANCH_NAME == 'stage' 
+          if: env.RUN_TRAINING == 'true'  && github.ref == 'refs/heads/stage' 
           working-directory: ${{ github.workspace }}
           run: |
                 echo "simulate model upload to rasa-x"
