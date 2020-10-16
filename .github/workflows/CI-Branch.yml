@@ -1,4 +1,4 @@
-name: CI
+name: CI-Branch
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
@@ -16,77 +16,88 @@ jobs:
           AWS_MODEL_DIRECTORY: 'Models'
           BOT_MODEL_DIRECTORY: './models'
           RUN_TRAINING: 'false'
-          BRANCH_NAME: ${GITHUB_REF##*/}
-        steps:
-            # - uses: actions/checkout@v2   
 
-            # - name: Set up Python 3.7
-            #   uses: actions/setup-python@v1
-            #   with:
-            #     python-version: 3.7
+        steps:
+        - uses: actions/checkout@v2   
+        - id: files
+          uses: jitterbit/get-changed-files@v1
+
+        - name: Set up Python 3.7
+          uses: actions/setup-python@v1
+          with:
+            python-version: 3.7
+    
+        - name: Install dependencies, set env
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt                
+                    
+        - name: Rasa Data Validation
+          working-directory: ${{ github.workspace }}
+          run: |
+            rasa data validate --debug 
         
-            # - name: Install dependencies, set env
-            #   run: |
-            #     python -m pip install --upgrade pip
-            #     pip install -r requirements.txt                
-                      
-            # - name: Rasa Data Validation
-            #   working-directory: ${{ github.workspace }}
-            #   run: |
-            #     rasa data validate --debug 
-            - name: set_training
-              if: |
-                  contains(  steps.files.outputs.all, 'data/' ) 
-                  || contains(  steps.files.outputs.all, 'config.yml' ) 
-                  || contains(  steps.files.outputs.all, 'domain.yml' )
-              run: |
+
+        - name: set_training
+          if: |
+                contains(  steps.files.outputs.all, 'data/' ) 
+                || contains(  steps.files.outputs.all, 'config.yml' ) 
+                || contains(  steps.files.outputs.all, 'domain.yml' )
+          run: |
                 echo "RUN_TRAINING=true"  >> $GITHUB_ENV
                 echo "training should run"
 
-            - name: Train model
-              if: env.RUN_TRAINING == 'true'
-              run: |
-                # rasa train
+        - name: Train model
+          if: env.RUN_TRAINING == 'true'
+          run: |
+                rasa train
                 echo "simulate model training"
+        
+        
+        - name: upload model from S3 
+          if: env.RUN_TRAINING == 'true'
+          uses: jakejarvis/s3-sync-action@v0.5.1
+          env:
+            SOURCE_DIR: './models'
+            AWS_REGION: 'us-east-1'
+            AWS_S3_BUCKET: 'jovensaludbot'
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            DEST_DIR: 'TEMP'
+        
+        - name: download from s3
+          if: env.RUN_TRAINING == 'false'
+          uses: prewk/s3-cp-action@master
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION: 'us-east-1' # optional: defaults to us-east-1
+            SOURCE: 's3://jovensaludbot/TEMP/'
+            DEST: './models'
             
-            
-            - name: Download model from S3 
-              if: env.RUN_TRAINING == 'false'
-              run: |
-                echo "simulate model download from S3"
-            
-            #   uses: jakejarvis/s3-sync-action@v0.5.1
-            #   env:
-            #     SOURCE_DIR: './models'
-            #     AWS_REGION: 'us-east-1'
-            #     AWS_S3_BUCKET: 'jovensaludbot'
-            #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            #     DEST_DIR: 'Models'
-                
-            - name: Run Through Test Stories
-              run: |
-                # rasa test 
-                echo "simulate model test"
-            
-            - name: Upload model to S3 
-              if: env.RUN_TRAINING == 'true'
-              run: |
+        - name: Run Through Test Stories
+          run: |
+            rasa test 
+              echo "simulate model test"
+        
+        - name: Upload model to S3 
+          if: env.RUN_TRAINING == 'true'
+          run: |
                 echo "simulate model upload to S3"
-            #   uses: jakejarvis/s3-sync-action@v0.5.1
-            #   env:
-            #     SOURCE_DIR: './models'
-            #     AWS_REGION: 'us-east-1'
-            #     AWS_S3_BUCKET: 'jovensaludbot'
-            #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            #     DEST_DIR: 'Models'
-            
-            
-            - name: Upload model to rasa - x     
-              if: env.RUN_TRAINING == 'true'  && env.BRANCH_NAME == 'stage' 
-              working-directory: ${{ github.workspace }}
-              run: |
+        #   uses: jakejarvis/s3-sync-action@v0.5.1
+        #   env:
+        #     SOURCE_DIR: './models'
+        #     AWS_REGION: 'us-east-1'
+        #     AWS_S3_BUCKET: 'jovensaludbot'
+        #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #     DEST_DIR: 'Models'
+        
+        
+        - name: Upload model to rasa - x     
+          if: env.RUN_TRAINING == 'true'  && github.ref == 'refs/heads/stage' 
+          working-directory: ${{ github.workspace }}
+          run: |
                 echo "simulate model upload to rasa-x"
 
   

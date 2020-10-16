@@ -26,7 +26,7 @@ responses:
   - text: "Bye"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+  - text: "I am  a bot,powered by Rasa."
 
   utter_default:   # utterance sent by action_default_fallback
   - buttons:
@@ -34,7 +34,7 @@ responses:
       title: human handover
     - payload: /mood_unhappy
       title: re-phrase
-    text: "sorry, I didn't get that, can you rephrase it?"
+    text: "sorry, I didn't get that, can you rephrase it? please"
 
 actions:
   - action_default_fallback
