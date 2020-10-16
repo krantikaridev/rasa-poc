@@ -3,9 +3,9 @@ name: CI
 # events but only for the master branch
 on:
     push:
-      branches: [ master, stage ]
+      branches: [ dev, stage ]
     pull_request:
-      branches: [ master, stage ]
+      branches: [ dev, stage ]
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
     build-model:
@@ -75,9 +75,10 @@ jobs:
             #     DEST_DIR: 'Models'
             
             
-            - name: Upload model to rasa - x                  
-              working-directory: ${{ github.workspace }} 
-              if: TRAIN_MODEL == 'true' && BRANCH_NAME == 'master'
+            - name: Upload model to rasa - x     
+              if: TRAIN_MODEL == 'true' && BRANCH_NAME == 'stage'
+              
+              working-directory: ${{ github.workspace }}
               run: |
                 echo "simulate model upload to rasa-x"
 
