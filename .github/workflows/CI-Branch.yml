@@ -37,10 +37,10 @@ jobs:
             #     rasa data validate --debug 
         - name: ENV and Other        
             run: |
-            echo BRANCH_NAME : ${GITHUB_REF##*/}
-            echo ACTION_SERVER : $ACTION_SERVER
-            echo RUN_TRAINING : $RUN_TRAINING
-            echo "files : ${{steps.files.outputs.all}}"
+                echo BRANCH_NAME : ${GITHUB_REF##*/}
+                echo ACTION_SERVER : $ACTION_SERVER
+                echo RUN_TRAINING : $RUN_TRAINING
+                echo "files : ${{steps.files.outputs.all}}"
 
         - name: set_training
             if: |
@@ -48,20 +48,20 @@ jobs:
                 || contains(  steps.files.outputs.all, 'config.yml' ) 
                 || contains(  steps.files.outputs.all, 'domain.yml' )
             run: |
-            echo "RUN_TRAINING=true"  >> $GITHUB_ENV
-            echo "training should run"
+                echo "RUN_TRAINING=true"  >> $GITHUB_ENV
+                echo "training should run"
 
         - name: Train model
             if: env.RUN_TRAINING == 'true'
             run: |
-            # rasa train
-            echo "simulate model training"
+                # rasa train
+                echo "simulate model training"
         
         
         - name: Download model from S3 
             if: env.RUN_TRAINING == 'false'
             run: |
-            echo "simulate model download from S3"
+                echo "simulate model download from S3"
         
         #   uses: jakejarvis/s3-sync-action@v0.5.1
         #   env:
@@ -75,12 +75,12 @@ jobs:
         - name: Run Through Test Stories
             run: |
             # rasa test 
-            echo "simulate model test"
+                echo "simulate model test"
         
         - name: Upload model to S3 
             if: env.RUN_TRAINING == 'true'
             run: |
-            echo "simulate model upload to S3"
+                echo "simulate model upload to S3"
         #   uses: jakejarvis/s3-sync-action@v0.5.1
         #   env:
         #     SOURCE_DIR: './models'
@@ -95,6 +95,6 @@ jobs:
             if: env.RUN_TRAINING == 'true'  && env.BRANCH_NAME == 'stage' 
             working-directory: ${{ github.workspace }}
             run: |
-            echo "simulate model upload to rasa-x"
+                echo "simulate model upload to rasa-x"
 
   
