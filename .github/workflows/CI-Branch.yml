@@ -44,7 +44,7 @@ jobs:
                   echo "Training should be run"
 
             - name: Train model
-              if: env.RUN_TRAINING
+              if: env.RUN_TRAINING == true
               run: |
                 # rasa train
                 echo "simulate model training"
@@ -70,7 +70,7 @@ jobs:
                 echo "simulate model test"
             
             - name: Upload model to S3 
-              if: env.RUN_TRAINING
+              if: env.RUN_TRAINING == true
               run: |
                 echo "simulate model upload to S3"
             #   uses: jakejarvis/s3-sync-action@v0.5.1
