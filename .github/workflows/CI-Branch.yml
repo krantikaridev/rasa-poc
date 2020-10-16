@@ -42,7 +42,8 @@ jobs:
             echo BRANCH_NAME : ${GITHUB_REF##*/}
             echo ${GITHUB_REF##*/}
             echo B_N: $B_N
-            
+            echo ${github.ref}
+            echo github.ref
             echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
             echo BRANCH_NAME : $BRANCH_NAME
             echo BRANCH_NAME : ${BRANCH_NAME}
