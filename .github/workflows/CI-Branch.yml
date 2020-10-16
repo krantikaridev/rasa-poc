@@ -34,6 +34,12 @@ jobs:
             #   working-directory: ${{ github.workspace }}
             #   run: |
             #     rasa data validate --debug 
+            - name: ENV and Other
+              run: |
+                echo BRANCH_NAME : $BRANCH_NAME
+                echo ACTION_SERVER : $ACTION_SERVER
+                echo RUN_TRAINING : $RUN_TRAINING
+                echo files : $steps.files.outputs.all
             - name: set_training
               if: |
                   contains(  steps.files.outputs.all, 'data/' ) 
