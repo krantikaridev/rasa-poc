@@ -75,10 +75,9 @@ jobs:
             #     DEST_DIR: 'Models'
             
             
-            - name: Upload model to rasa - x     
+            - name: Upload model to rasa - x                  
+              working-directory: ${{ github.workspace }} 
               if: TRAIN_MODEL == 'true' && BRANCH_NAME == 'master'
-              
-              working-directory: ${{ github.workspace }}
               run: |
                 echo "simulate model upload to rasa-x"
 
