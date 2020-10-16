@@ -20,7 +20,8 @@ jobs:
 
         steps:
         - uses: actions/checkout@v2   
-        - uses: jitterbit/get-changed-files@v1
+        - id: files
+          uses: jitterbit/get-changed-files@v1
             # - name: Set up Python 3.7
             #   uses: actions/setup-python@v1
             #   with:
