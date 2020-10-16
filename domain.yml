@@ -34,7 +34,7 @@ responses:
       title: human handover
     - payload: /mood_unhappy
       title: re-phrase
-    text: "sorry, I didn't get that, can you rephrase it? please"
+    text: "sorry, I didn't get that can you rephrase it? please"
 
 actions:
   - action_default_fallback
