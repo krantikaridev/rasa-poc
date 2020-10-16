@@ -49,7 +49,7 @@ jobs:
         - name: Train model
           if: env.RUN_TRAINING == 'true'
           run: |
-                # rasa train
+                rasa train
                 echo "simulate model training"
         
         
