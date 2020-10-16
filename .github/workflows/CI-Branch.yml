@@ -39,7 +39,9 @@ jobs:
                   contains(  steps.files.outputs.all, 'data/' ) 
                   || contains(  steps.files.outputs.all, 'config.yml' ) 
                   || contains(  steps.files.outputs.all, 'domain.yml' )
-              run: echo "RUN_TRAINING=true"  >> $GITHUB_ENV
+              run: |
+                  echo "RUN_TRAINING=${{true}}"  >> $GITHUB_ENV
+                  echo "Training should be run"
 
             - name: Train model
               if: env.RUN_TRAINING
