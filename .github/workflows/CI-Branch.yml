@@ -22,10 +22,15 @@ jobs:
         - id: files
           uses: jitterbit/get-changed-files@v1
 
-        - name: Set up Python 3.7
-          uses: actions/setup-python@v1
-          with:
-            python-version: 3.7
+        - name: Echo
+          shell: bash
+          run: |
+            echo Heyyyyy
+
+        # - name: Set up Python 3.7
+        #   uses: actions/setup-python@v1
+        #   with:
+        #     python-version: 3.7
     
         # - name: Install dependencies, set env
         #   run: |
