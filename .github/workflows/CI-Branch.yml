@@ -89,7 +89,7 @@ jobs:
           run: |
               echo "conent after download"
               ls
-              cd models
+              cd "models"
               ls
               echo "models conent after download"
 
