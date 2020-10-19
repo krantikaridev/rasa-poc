@@ -1,3 +1,7 @@
 __init__.py
 __pycache__/__init__.cpython-37.pyc
 __pycache__/actions.cpython-37.pyc
+results/confmat.png
+results/hist.png
+results/intent_errors.json
+results/intent_report.json

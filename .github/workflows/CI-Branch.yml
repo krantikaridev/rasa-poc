@@ -18,6 +18,7 @@ jobs:
           AWS_MODEL_DIRECTORY: 'Models'
           BOT_MODEL_DIRECTORY: './models'
           RUN_TRAINING: 'false'
+          RUN_CROSS_VAL: 'false'
         defaults:
           run:
             working-directory: ${{ github.workspace }}
@@ -42,7 +43,7 @@ jobs:
         #     rasa data validate --debug 
         
 
-        - name: set_training
+        - name: Set RUN_TRAINING
           if: |
                 contains(  steps.files.outputs.all, 'data/' ) 
                 || contains(  steps.files.outputs.all, 'config.yml' ) 
@@ -50,7 +51,14 @@ jobs:
           run: |
                 echo "RUN_TRAINING=true"  >> $GITHUB_ENV
                 echo "training should run"
-
+                
+        - name: set RUN_CROSS_VAL
+          if: |
+                contains(  steps.files.outputs.all, 'config.yml' ) 
+          run: |
+                echo "RUN_CROSS_VAL=true"  >> $GITHUB_ENV
+                echo "CROSS_VAL should run"
+                
         - name: Train model
           if: env.RUN_TRAINING == 'true'
           run: |
@@ -93,6 +101,7 @@ jobs:
               echo "models conent after download"
 
         - name: Run Through Test Stories
+          if: env.RUN_CROSS_VAL == 'true' 
           run: |
               echo "simulate model test"
               rasa test nlu --cross-validation
