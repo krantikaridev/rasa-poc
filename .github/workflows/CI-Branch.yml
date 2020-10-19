@@ -18,17 +18,15 @@ jobs:
           AWS_MODEL_DIRECTORY: 'Models'
           BOT_MODEL_DIRECTORY: './models'
           RUN_TRAINING: 'false'
-
+        defaults:
+          run:
+            working-directory: ${{ github.workspace }}
         steps:
         - uses: actions/checkout@v2   
         - id: files
           uses: jitterbit/get-changed-files@v1
 
-        - name: Echo
-          shell: bash
-          run: |
-            echo Heyyyyy
-
+        
         # - name: Set up Python 3.7
         #   uses: actions/setup-python@v1
         #   with:
@@ -70,11 +68,10 @@ jobs:
           run: |
               echo "simulate model download"
               echo "current conent"
-              ls 
-
-              cd models
               ls
-              echo "models conent"
+              # cd models
+              # ls
+              # echo "models conent"
         
         - name: get model list from S3 for real
           if: env.RUN_TRAINING == 'false'
