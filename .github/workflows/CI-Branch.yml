@@ -88,14 +88,14 @@ jobs:
             DEST: './models'
 
         - name: print content after download
-        if: env.RUN_TRAINING == 'false'
-        working-directory: ${{ github.workspace }}
-        run: |
-            echo "conent after download"
-            ls
-            cd models
-            ls
-            echo "models conent after download"
+          if: env.RUN_TRAINING == 'false'
+          working-directory: ${{ github.workspace }}
+          run: |
+              echo "conent after download"
+              ls
+              cd models
+              ls
+              echo "models conent after download"
 
         - name: Run Through Test Stories
           run: |
