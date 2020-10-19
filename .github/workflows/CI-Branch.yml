@@ -72,15 +72,15 @@ jobs:
               # ls
               # echo "models conent"
         
-        - name: get model list from S3 for real
-          if: env.RUN_TRAINING == 'false'
-          uses: prewk/s3-cp-action@master
-          env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_REGION: 'us-east-1' # optional: defaults to us-east-1
-            SOURCE: 's3://jovensaludbot/TEMP/'
-            DEST: './models'
+        # - name: get model list from S3 for real
+        #   if: env.RUN_TRAINING == 'false'
+        #   uses: prewk/s3-cp-action@master
+        #   env:
+        #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #     AWS_REGION: 'us-east-1' # optional: defaults to us-east-1
+        #     SOURCE: 's3://jovensaludbot/TEMP/'
+        #     DEST: './models'
 
         - name: print content after download
           if: env.RUN_TRAINING == 'false'
