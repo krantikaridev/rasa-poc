@@ -65,28 +65,39 @@ jobs:
           run: |
               echo "simulate model listing"
         
-        - name: download from s3
+        - name: print content before download
           if: env.RUN_TRAINING == 'false'
           run: |
               echo "simulate model download"
+              echo "current conent"
+              ls 
+
+              cd models
+              ls
+              echo "models conent"
+              cd ..
         
         - name: get model list from S3 for real
           if: env.RUN_TRAINING == 'false'
-          uses: keithweaver/aws-s3-github-action@master
-          with:
-            command: ls
-            source: s3://jovenslaudbot/Models
-            # destination: s3://yourbucket/folder/local_file.txt
-            aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # uses: prewk/s3-cp-action@master
-          # env:
-          #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          #   AWS_REGION: 'us-east-1' # optional: defaults to us-east-1
-          #   SOURCE: 's3://jovensaludbot/TEMP/'
-          #   DEST: './models'
-            
+          uses: prewk/s3-cp-action@master
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION: 'us-east-1' # optional: defaults to us-east-1
+            SOURCE: 's3://jovensaludbot/TEMP/'
+            DEST: './models'
+
+        - name: print content after download
+        if: env.RUN_TRAINING == 'false'
+        run: |
+            echo "conent after download"
+            ls 
+
+            cd models
+            ls
+            echo "models conent after download"
+            cd ..
+
         - name: Run Through Test Stories
           run: |
               echo "simulate model test"
