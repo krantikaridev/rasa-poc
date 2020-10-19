@@ -22,20 +22,20 @@ jobs:
         - id: files
           uses: jitterbit/get-changed-files@v1
 
-        - name: Set up Python 3.7
-          uses: actions/setup-python@v1
-          with:
-            python-version: 3.7
+        # - name: Set up Python 3.7
+        #   uses: actions/setup-python@v1
+        #   with:
+        #     python-version: 3.7
     
-        - name: Install dependencies, set env
-          run: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt                
+        # - name: Install dependencies, set env
+        #   run: |
+        #     python -m pip install --upgrade pip
+        #     pip install -r requirements.txt                
                     
-        - name: Rasa Data Validation
-          working-directory: ${{ github.workspace }}
-          run: |
-            rasa data validate --debug 
+        # - name: Rasa Data Validation
+        #   working-directory: ${{ github.workspace }}
+        #   run: |
+        #     rasa data validate --debug 
         
 
         - name: set_training
@@ -62,6 +62,14 @@ jobs:
           if: env.RUN_TRAINING == 'false'
           run: |
               echo "simulate model download"
+
+        - uses: keithweaver/aws-s3-github-action@master
+          with:
+            command: ls
+            source: s3://jovenslaudbot/Models
+            # destination: s3://yourbucket/folder/local_file.txt
+            aws_access_key_id: ${{ secret.AWS_ACCESS_KEY_ID }}
+            aws_secret_access_key: ${{ secret.AWS_SECRET_ACCESS_KEY }}
           # uses: prewk/s3-cp-action@master
           # env:
           #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
