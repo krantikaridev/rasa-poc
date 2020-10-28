@@ -52,16 +52,18 @@ jobs:
           if: env.RUN_TRAINING == 'true'
           run: |
                 echo "simulate model upload to S3"
-                
+        
+        - name: Configure AWS credentials from Test account
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-1
+  
         - name: Get model list from S3 
           if: env.RUN_TRAINING == 'false'
-          uses: keithweaver/aws-s3-github-action@master
-          with:
-            command: ls
-            # source: ./local_file.txt
-            # destination: s3://yourbucket/folder/local_file.txt
-            aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          run: |
+              aws s3 ls s3://jovensaludbot/Models-Stage/ 
         
         
         # - name: Get model from S3
