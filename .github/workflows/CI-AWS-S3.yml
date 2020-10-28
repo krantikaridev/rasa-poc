@@ -66,13 +66,11 @@ jobs:
           run: |
               aws s3 ls s3://jovensaludbot/Models-Dev/ 
               aws s3 ls s3://jovensaludbot/Models-Dev/ | tail -n 1
-              aws s3 ls s3://jovensaludbot/Models-Dev/ | tail -n 1 | awk '{print $4}'
-              echo "Model_Name=$(echo aws s3 ls s3://jovensaludbot/Models-Dev/ | tail -n 1 | awk '{print $4}')" >> $GITHUB_ENV
+              aws s3 ls s3://jovensaludbot/Models-Dev/ | tail -n 1 | awk '{print $4}'              
               echo "::set-output name=model_name::$(aws s3 ls s3://jovensaludbot/Models-Dev/ | tail -n 1 | awk '{print $4}')"  
         
         - name: latest model name
-          run: |
-              echo $Model_Name
+          run: |              
               echo ${{ steps.latest-model.outputs.model_name }}
         # - name: Get model from S3
         #   if: env.RUN_TRAINING == 'false'
