@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest        
         env:
           ACTION_SERVER: http://bot.jovensalud.net/actions/ 
-          AWS_MODEL_DIRECTORY: 'Models'
+          AWS_MODEL_DIRECTORY: 'Models-Dev'
           BOT_MODEL_DIRECTORY: './models'
           RUN_TRAINING: 'false'
         defaults:
@@ -61,13 +61,17 @@ jobs:
             aws-region: us-east-1
   
         - name: Get model list from S3 
+          id: latest-model
           if: env.RUN_TRAINING == 'false'
           run: |
-              aws s3 ls s3://jovensaludbot/Models-Stage/ 
-              aws s3 ls s3://jovensaludbot/Models-Stage/ | tail -n 1
-              aws s3 ls s3://jovensaludbot/Models-Stage/ | tail -n 1 | awk '{print $4}'
+              aws s3 ls s3://jovensaludbot/Models-Dev/ 
+              aws s3 ls s3://jovensaludbot/Models-Dev/ | tail -n 1
+              aws s3 ls s3://jovensaludbot/Models-Dev/ | tail -n 1 | awk '{print $4}'
+              echo "::set-output name=model_name::aws s3 ls s3://jovensaludbot/Models-Dev/ | tail -n 1 | awk '{print $4}'"  
         
-        
+        - name: latest model name
+          run: |
+          echo ${{ steps.latest-model.outputs.model_name }}
         # - name: Get model from S3
         #   if: env.RUN_TRAINING == 'false'
         #   uses: prewk/s3-cp-action@master
