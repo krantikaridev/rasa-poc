@@ -72,8 +72,8 @@ jobs:
         
         - name: latest model name
           run: |
-          echo $Model_Name
-          echo ${{ steps.latest-model.outputs.model_name }}
+              echo $Model_Name
+              echo ${{ steps.latest-model.outputs.model_name }}
         # - name: Get model from S3
         #   if: env.RUN_TRAINING == 'false'
         #   uses: prewk/s3-cp-action@master
