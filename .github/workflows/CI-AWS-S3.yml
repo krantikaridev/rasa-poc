@@ -64,6 +64,8 @@ jobs:
           if: env.RUN_TRAINING == 'false'
           run: |
               aws s3 ls s3://jovensaludbot/Models-Stage/ 
+              aws s3 ls s3://jovensaludbot/Models-Stage/ | tail -n 1
+              aws s3 ls s3://jovensaludbot/Models-Stage/ | tail -n 1 | awk '{print $4}'
         
         
         # - name: Get model from S3
