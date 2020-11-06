@@ -5,3 +5,4 @@ results/confmat.png
 results/hist.png
 results/intent_errors.json
 results/intent_report.json
+.env

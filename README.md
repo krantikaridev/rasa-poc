@@ -12,3 +12,5 @@ docker run  --user $(id -u):$(id -g) -it -v $(pwd):/app --entrypoint rasa rasa/r
 docker run -v $(pwd):/app rasa/rasa:1.10.15-full run actions --port 5006 --debug
 
 FYI: The actions are disabled and secret keys have been removed as this was a POC, I removed them once everything was verified
+## local run - fB
+docker run -p 5005:5005 --user $(id -u):$(id -g) -it -v $(pwd):/app -e "FB_VERIFY_TOKEN=facebook-rasa-poc" -e "FB_APP_SECRET={my_app_secret}" -e "FB_PAGE_ACCESS_TOKEN={my_page_access_token}" --entrypoint rasa rasa/rasa:1.10.15-full run  --debug
